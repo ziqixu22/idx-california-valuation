@@ -11,7 +11,7 @@ jobs:
         with:
           enable-cache: false
       - run: uv sync --extra dev
+      - run: echo UV_LOCK_BEGIN && cat uv.lock && echo UV_LOCK_END
       - run: uv run --extra dev pytest -q
       - run: uv run --extra dev ruff check .
       - run: uv run --extra dev ruff format --check .
-
