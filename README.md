@@ -17,6 +17,8 @@ Independent public-data reproduction inspired by an IDX Exchange business scenar
 
 Requires Python 3.11+ and [uv](https://docs.astral.sh/uv/). From this directory:
 
+The current environment installs only audit/Parquet tooling. GeoPandas, modeling, PyTorch, MLflow, and FastAPI enter the lockfile with their dependent phases.
+
 ```bash
 uv sync --extra dev
 uv run idxavm audit-data
