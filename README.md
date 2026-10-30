@@ -25,7 +25,7 @@ uv run --extra dev ruff check .
 uv run --extra dev ruff format --check .
 ```
 
-`audit-data` exits 2 and writes `reports/data_audit.{json,md}` if the API is unavailable. It makes a full, paginated scan only when reachable. The output contains aggregate counts and metadata hash, not individual parcel records. `uv run idxavm ingest --source sacramento --reuse-approved` is deliberately blocked unless a completed audit is present and the operator has verified lawful bulk reuse. Bronze snapshots and Silver Parquet are ignored by Git; Gold awaits Phase 2. Do not use the flag as a substitute for actual permission.
+`audit-data` exits 2 and writes `reports/data_audit.{json,md}` if the API is unavailable. It makes a full, paginated scan only when reachable. The output contains aggregate counts and metadata hash, not individual parcel records. `uv run idxavm ingest --source sacramento --reuse-approved` is deliberately blocked unless the audit is complete, its reviewed decision is GO, and the operator has verified lawful bulk reuse. Bronze snapshots and Silver Parquet are ignored by Git; Gold awaits Phase 2. Do not use the flag as a substitute for actual permission.
 
 ## Decisions
 

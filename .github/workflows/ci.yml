@@ -8,8 +8,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: false
       - run: uv sync --extra dev
       - run: uv run --extra dev pytest -q
-      - run: uv run --extra dev ruff format --diff .
       - run: uv run --extra dev ruff check .
       - run: uv run --extra dev ruff format --check .
+

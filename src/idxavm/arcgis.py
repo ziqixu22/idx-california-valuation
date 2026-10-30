@@ -1,4 +1,5 @@
 """ArcGIS client. No private data or credentials are required."""
+
 import json
 import logging
 import time
@@ -16,23 +17,36 @@ class ArcGISError(RuntimeError):
 
 class ArcGISClient:
     def __init__(self, layer=LAYER, retries=3, timeout=20, delay=0.25):
-        self.layer, self.retries, self.timeout, self.delay = layer.rstrip("/"), retries, timeout, delay
+        self.layer, self.retries, self.timeout, self.delay = (
+            layer.rstrip("/"),
+            retries,
+            timeout,
+            delay,
+        )
 
     def get(self, endpoint="", **params):
         url = self.layer + endpoint + "?" + urlencode({"f": "json", **params})
         for attempt in range(self.retries):
             try:
-                with urlopen(Request(url, headers={"User-Agent": "idxavm-research/0.1"}),
-                             timeout=self.timeout) as response:
+                with urlopen(
+                    Request(url, headers={"User-Agent": "idxavm-research/0.1"}),
+                    timeout=self.timeout,
+                ) as response:
                     result = json.load(response)
                 if "error" in result:
                     raise ArcGISError(f"ArcGIS error: {result['error']}")
                 return result
             except (HTTPError, URLError, TimeoutError, OSError, ValueError, ArcGISError) as exc:
-                if attempt == self.retries - 1 or isinstance(exc, ArcGISError) and "400" in str(exc):
-                    raise ArcGISError(f"Request failed after {attempt + 1} attempt(s): {type(exc).__name__}: {exc}") from exc
+                if (
+                    attempt == self.retries - 1
+                    or isinstance(exc, ArcGISError)
+                    and "400" in str(exc)
+                ):
+                    raise ArcGISError(
+                        f"Request failed after {attempt + 1} attempt(s): {type(exc).__name__}: {exc}"
+                    ) from exc
                 LOG.warning("ArcGIS request retry %s/%s: %s", attempt + 1, self.retries, exc)
-                time.sleep(min(2 ** attempt, 8))
+                time.sleep(min(2**attempt, 8))
         raise AssertionError("unreachable")
 
     def metadata(self):
@@ -53,9 +67,15 @@ class ArcGISClient:
             raise ArcGISError("Invalid page size")
         seen = set()
         for offset in range(0, total, size):
-            result = self.get("/query", where="1=1", outFields=",".join(fields),
-                              returnGeometry="false", orderByFields=f"{oid} ASC",
-                              resultOffset=offset, resultRecordCount=size)
+            result = self.get(
+                "/query",
+                where="1=1",
+                outFields=",".join(fields),
+                returnGeometry="false",
+                orderByFields=f"{oid} ASC",
+                resultOffset=offset,
+                resultRecordCount=size,
+            )
             features = result.get("features")
             if not isinstance(features, list) or not features:
                 raise ArcGISError(f"Empty or malformed page at offset {offset}")
@@ -68,7 +88,9 @@ class ArcGISClient:
                 seen.add(attrs[oid])
                 yield attrs
             if len(features) != min(size, total - offset):
-                raise ArcGISError(f"Page length mismatch at offset {offset}; source may have changed")
+                raise ArcGISError(
+                    f"Page length mismatch at offset {offset}; source may have changed"
+                )
             time.sleep(self.delay)
         if len(seen) != total:
             raise ArcGISError(f"Count changed during scan: expected {total}, got {len(seen)}")

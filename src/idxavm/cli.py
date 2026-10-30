@@ -14,7 +14,9 @@ def main():
     ingestion.add_argument("--source", choices=["sacramento"], required=True)
     ingestion.add_argument("--reuse-approved", action="store_true")
     args = parser.parse_args()
-    logging.basicConfig(level=args.log_level, format="%(asctime)s %(levelname)s %(name)s %(message)s")
+    logging.basicConfig(
+        level=args.log_level, format="%(asctime)s %(levelname)s %(name)s %(message)s"
+    )
     if args.command == "audit-data":
         output = Path("reports")
         result = audit()
@@ -28,7 +30,9 @@ def main():
         from .layers import ingest
 
         report = json.loads(Path("reports/data_audit.json").read_text())
-        print(json.dumps(ingest(ArcGISClient(), Path("data"), report, args.reuse_approved), indent=2))
+        print(
+            json.dumps(ingest(ArcGISClient(), Path("data"), report, args.reuse_approved), indent=2)
+        )
         return 0
 
 
