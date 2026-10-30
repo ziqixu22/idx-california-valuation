@@ -1,0 +1,17 @@
+{
+  "checked_at_utc": "2026-10-30T03:16:32.204702+00:00",
+  "counts": null,
+  "date_range": null,
+  "decision": "NO-GO",
+  "error": "ArcGISError: Request failed after 3 attempt(s): URLError: <urlopen error [Errno 8] nodename nor servname provided, or not known>",
+  "field_names": null,
+  "geography": null,
+  "legal_note": "The official assessor records page calls assessor-collected market comparable sales data confidential. Public layer presence does not establish bulk reuse permission or arms-length sale semantics; written clarification required.",
+  "metadata_sha256": null,
+  "property_types": null,
+  "sources": [
+    "https://mapservices.gis.saccounty.gov/arcgis/rest/services/ASSESSOR/MapServer/1",
+    "https://assessor.saccounty.gov/us/en/maps-property-data-and-records/assessor-records.html"
+  ],
+  "status": "NOT VERIFIED"
+}

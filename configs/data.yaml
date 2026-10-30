@@ -1,0 +1,6 @@
+source: sacramento
+layer_url: https://mapservices.gis.saccounty.gov/arcgis/rest/services/ASSESSOR/MapServer/1
+single_family_value: Single Family Residence
+target_candidate: INDICATED_SALES_PRICE
+as_of_policy: blocked_until_source_semantics_verified
+
